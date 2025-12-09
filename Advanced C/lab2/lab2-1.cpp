@@ -1,26 +1,27 @@
 #include <iostream>
-#include <cctype>   // for islower, isupper, tolower, toupper
+#include <cctype>  
 using namespace std;
 
 int main() {
     string message;
    cout << "Enter a message: "; 
-    cin >> message;   // input: AbbeF
+    cin >> message;  
 
     string result = "";
     
     for (char ch : message) {
         if (islower(ch)) {
-            result += toupper(ch);   // convert to UPPER
+            result += toupper(ch);
         }
         else if (isupper(ch)) {
-            result += tolower(ch);   // convert to lower
+            result += tolower(ch);  
         }
         else {
-            result += ch;            // keep other characters
+            result += ch;            
         }
     }
 
-    cout << result;   // output: aBBEf
+    cout << result;  
     return 0;
+
 }
