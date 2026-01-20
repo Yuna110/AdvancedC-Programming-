@@ -14,4 +14,5 @@ int main() {
     cout << base << " raised to the power of " << exponent << " is " << result << endl;
 
     return 0;
+
 }
