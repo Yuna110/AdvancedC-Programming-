@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
 
 typedef pair<int, int> ii;
@@ -9,15 +7,13 @@ typedef vector<ii> vii;
 
 vector<vii> AL;
 vi taken;
-priority_queue<ii> pq;  // max heap (we use negative weight)
+priority_queue<ii> pq;   // max heap (we use negative weight)
 
 void process(int u) {
     taken[u] = 1;
-    for (int i = 0; i < AL[u].size(); i++) {
-        int v = AL[u][i].first;
-        int w = AL[u][i].second;
+    for (auto &[v, w] : AL[u]) {
         if (!taken[v]) {
-            pq.push(ii(-w, -v));  // push negative to simulate min-heap
+            pq.push({-w, -v});  // simulate min heap
         }
     }
 }
@@ -25,43 +21,39 @@ void process(int u) {
 int main() {
 
     int V, E;
-    cin >> V >> E;
+    cin >> V >> E;   // 🔥 read from terminal
 
     AL.assign(V, vii());
 
-    for (int i = 0; i < E; i++) {
+    for (int i = 0; i < E; ++i) {
         int u, v, w;
         cin >> u >> v >> w;
-        AL[u].push_back(ii(v, w));
-        AL[v].push_back(ii(u, w));
+        AL[u].emplace_back(v, w);
+        AL[v].emplace_back(u, w);
     }
 
     taken.assign(V, 0);
     process(0);
 
-    int mst_cost = 0;
-    int num_taken = 0;
+    int mst_cost = 0, num_taken = 0;
 
     while (!pq.empty()) {
-        ii top = pq.top(); 
+        auto [w, u] = pq.top();
         pq.pop();
 
-        int w = -top.first;
-        int u = -top.second;
+        w = -w;
+        u = -u;
 
         if (taken[u]) continue;
 
         mst_cost += w;
         process(u);
-        num_taken++;
+        ++num_taken;
 
         if (num_taken == V - 1) break;
     }
 
-    if (num_taken != V - 1)
-        cout << "Graph is not connected\n";
-    else
-        cout << "MST cost = " << mst_cost << " (Prim's)\n";
+    cout << "MST cost = " << mst_cost << " (Prim's)" << endl;
 
     return 0;
 }
